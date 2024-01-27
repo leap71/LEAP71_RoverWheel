@@ -2,7 +2,7 @@
 
 ### Prep
 
-This is a small library for generating rover wheel geometries using the [PicoGK](https://github.com/leap71/PicoGK) engine and the [ShapeKernel](https://github.com/leap71/LEAP71_ShapeKernel) library. This is an excercise to demonstrate how a modular latticing-like workflow and the concept of coordinate transformations can be applied to create complex, neatly curved wheels. Think of the wheels as made from soft, rubbery material, where their springiness / stiffness is a function of the shape and wall thickness of the individual elements that you see within. For stiff, metal wheels you would propably go with less elements and details.
+This is a small library for generating rover wheel geometries using the [PicoGK](https://github.com/leap71/PicoGK) engine and the [ShapeKernel](https://github.com/leap71/LEAP71_ShapeKernel) library. This is an excercise to demonstrate how a modular latticing-like workflow and the concept of coordinate transformations can be applied to create complex, neatly curved wheels. Think of the wheels as made from soft, rubbery material, where their springiness / stiffness is a function of the shape and wall thickness of the individual elements that you see within.
 
 
 
@@ -31,7 +31,7 @@ try
 {
     PicoGK.Library.Go(
         0.5f,
-        WheelShowCase.RandomWheelTask);
+        WheelShowCase.PresetWheelTask);
 }
 catch (Exception e)
 {
@@ -43,7 +43,7 @@ catch (Exception e)
 
 ### Wheel Contours and Design Space
 
-A wheel is initially described via its inner hub radius, its maximum outer radius and a reference width. The latter parameter drives the side contours that can vary the wheel's width along the radial dimension. We picture the wheel lying flat on the ground (z-plane) and consider one side of the width contour as the upper side  and the other as the lower side. When follow the side contour radially outwards, we will arrive at a point where the contour is more alinged with the vertical axis than with the radial direction. We mark this point as the transition to what we derive as the outer wheel contour. This patch will eventually become the wheel's tread. The centre hub radius is a constant and provides the inner contour. With these four contours, we can span a 2D design space and rotate it to receive a 3D design space that is conformal to the wheel's shape. 
+A wheel is initially described via its inner hub radius, its maximum outer radius and a reference width. The latter parameter drives the side contours that can vary the wheel's width along the radial dimension. We picture the wheel lying flat on the ground (z-plane) and consider one side of the width contour as the upper side  and the other as the lower side. When following the side contour radially outwards, we will arrive at a point where the contour is more alinged with the vertical axis than with the radial direction. We mark this point as the transition to what we derive as the outer wheel contour. This patch will eventually become the wheel's tread. The centre hub radius is a constant and provides the inner contour. With these four contours, we can span a 2D design space and rotate it to receive a 3D design space that is conformal to the wheel's shape. 
 
 ![](Documentation/LR_DesignSpace_02.png)
 
