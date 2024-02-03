@@ -20,7 +20,7 @@ Pick one option of how to add this library to your project:
 - Pro
   - add RoverWheel library as a submodule, linking the Github repo: https://github.com/leap71/LEAP71_RoverWheel
 
-There are two Task functions that get you started. If you call `WheelShowCase.PresetWheelTask()` one of four preset wheel variants will be generated. If you call `WheelShowCase.RandomWheelTask()` you can take your chance at a randomized wheel. Your Program.cs should look like this:
+There are two Task functions that get you started. If you call `WheelShowCase.PresetWheelTask()` one of four preset wheel variants will be generated. If you call `WheelShowCase.RandomWheelTask()` you can take your chance at a randomized wheel. Your Program.cs should look like this: 
 
 ```c#
 using Leap71.ShapeKernel;
@@ -35,9 +35,8 @@ try
 }
 catch (Exception e)
 {
-    Library.Log("Failed to run Task.");
-    Library.Log(e.ToString());
-    Library.oViewer().SetBackgroundColor(Cp.clrWarning);
+    Console.WriteLine("Failed to run Task.");
+    Console.WriteLine(e.ToString());
 }
 ```
 
