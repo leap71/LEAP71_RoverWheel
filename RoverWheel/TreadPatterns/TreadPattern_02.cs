@@ -57,13 +57,14 @@ namespace Leap71
 				{
 					float fPhi				= (2f * MathF.PI) / (float)(nRibs) * i;
 					List<Vector3> aPoints	= new List<Vector3>();
-					float dZ				= fContourHeight / 7f;
+					uint nZigZags			= 7;
 					float dPhi				= 0.2f;
 					int iCounter			= 0;
 
-                    for (float fZ = 0; fZ <= fContourHeight; fZ += dZ)
+                    for (int j = 0; j < nZigZags; j++)
 					{
-						if (iCounter % 2 == 1)
+						float fZ			= fContourHeight / (float)(nZigZags - 1) * j;
+                        if (iCounter % 2 == 1)
 						{
 							aPoints.Add(VecOperations.vecGetCylPoint(fRefRadius, fPhi + dPhi, fZ));
                         }
