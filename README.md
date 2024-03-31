@@ -23,9 +23,7 @@ Pick one option of how to add this library to your project:
 There are two Task functions that get you started. If you call `WheelShowCase.PresetWheelTask()` one of four preset wheel variants will be generated. If you call `WheelShowCase.RandomWheelTask()` you can take your chance at a randomized wheel. Your Program.cs should look like this: 
 
 ```c#
-using Leap71.ShapeKernel;
 using Leap71.RoverExamples;
-using PicoGK;
 
 try
 {
