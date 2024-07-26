@@ -50,7 +50,7 @@ namespace Leap71
 
             public Voxels voxConstruct(	float fRefRadius,
                                         float fContourHeight,
-										TrafoFunc oTreadTrafoFunc)
+                                        fnVertexTransformation oTreadTrafoFunc)
 			{
                 m_fRefRadius			= fRefRadius;
                 BasePipe oProfile		= new BasePipe(new LocalFrame(), fContourHeight);

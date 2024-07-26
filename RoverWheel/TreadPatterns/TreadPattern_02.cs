@@ -49,7 +49,7 @@ namespace Leap71
         {
             public Voxels voxConstruct(float fRefRadius,
                                         float fContourHeight,
-                                        TrafoFunc oTreadTrafoFunc)
+                                        fnVertexTransformation oTreadTrafoFunc)
             {
 				uint nRibs					= 50;
 				Lattice oLattice			= new Lattice();
