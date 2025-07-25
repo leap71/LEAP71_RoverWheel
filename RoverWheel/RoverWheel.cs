@@ -55,8 +55,8 @@ namespace Leap71
 			protected BaseLens				m_oWheel;
 			protected ITreadPattern			m_xTreadPattern;
 			protected WheelTread			m_oTread;
-			protected static List<Vector3>	m_aFullUpperHeightPoints = new List<Vector3>();
-            protected static List<Vector3>	m_aFullLowerHeightPoints = new List<Vector3>();
+			protected static List<Vector3>	m_aFullUpperHeightPoints = new ();
+            protected static List<Vector3>	m_aFullLowerHeightPoints = new ();
             protected static Frames			m_aUpperHeightFrames;
             protected static Frames			m_aLowerHeightFrames;
             protected static Frames			m_aInnerRadiusFrames;
@@ -208,7 +208,7 @@ namespace Leap71
 			/// Helper function to navigate within wheel coordinate space and
 			/// address (conformal) points within the wheel's bounding shape.
 			/// </summary>
-			protected static Vector3 vecGetInnerPt(float fHeightRatio, float fLengthRatio)
+			static Vector3 vecGetInnerPt(float fHeightRatio, float fLengthRatio)
 			{
 				Vector3 vecUpper	= m_aUpperHeightFrames.vecGetSpineAlongLength(fLengthRatio);
                 Vector3 vecLower	= m_aLowerHeightFrames.vecGetSpineAlongLength(fLengthRatio);
@@ -238,7 +238,7 @@ namespace Leap71
 			/// </summary>
 			protected void SetOuterPoints()
 			{
-				//prep upper and lower contour
+				// prep upper and lower contour
 				List<Vector3> aUpperWheelContour = new List<Vector3>();
 				foreach (Vector3 vecPt in m_aFullUpperHeightPoints.GetRange(0, m_aFullUpperHeightPoints.Count - 2))
                 {
@@ -263,7 +263,7 @@ namespace Leap71
                 aLowerWheelContour = SplineOperations.aGetReparametrizedSpline(aLowerWheelContour, 1f);
 
 
-                //filter for orientation
+                // filter for orientation
                 Vector3 vecTread					= Vector3.UnitZ;
 				Vector3 vecRim						= Vector3.UnitX;
 				List<Vector3> aOuterRadiusPoints	= new List<Vector3>();

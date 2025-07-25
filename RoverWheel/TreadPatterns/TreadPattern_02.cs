@@ -80,7 +80,7 @@ namespace Leap71
 					{
 						foreach (Vector3 vecPt in aPoints)
 						{
-							float fLengthRatio	= Uf.fLimitValue(vecPt.Z / fContourHeight, 0f, 1f);
+							float fLengthRatio	= float.Clamp(vecPt.Z / fContourHeight, 0f, 1f);
 							float fMaxRadius	= Uf.fTransSmooth(2f, 8f, vecPt.Z, 15f, 3f);
                             fMaxRadius			= Uf.fTransSmooth(fMaxRadius, 2f, vecPt.Z, fContourHeight - 15f, 3f);
                             float dRadius		= dRadiusRatio * fMaxRadius;

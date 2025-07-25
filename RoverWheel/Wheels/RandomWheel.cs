@@ -45,7 +45,7 @@ namespace Leap71
     {
 		public class RandomWheel : RoverWheel
 		{
-            protected uint m_nIndex;
+            uint m_nIndex;
 
             /// <summary>
             /// Generates a randomized rover wheel for 3d-printing.
@@ -57,7 +57,7 @@ namespace Leap71
                 m_nIndex = nIndex;
 
 
-                //Step 0: Reset static parameters
+                // Step 0: Reset static parameters
                 m_aFullUpperHeightPoints    = null;
                 m_aFullLowerHeightPoints    = null;
                 m_aUpperHeightFrames        = null;
@@ -66,13 +66,13 @@ namespace Leap71
                 m_aOuterRadiusFrames        = null;
 
 
-                //Step 1: Define key dimensions
+                // Step 1: Define key dimensions
                 m_fOuterRadius      = Uf.fGetRandomLinear(80, 200);
                 m_fHubRadius        = Uf.fGetRandomLinear(30, 50);
                 m_fRefWidth         = Uf.fGetRandomLinear(40, 90);
 
 
-                //Step 2: Construct contours
+                // Step 2: Construct contours
                 SetFullUpperHeightPoint();
 				SetFullLowerHeightPoints();
                 m_oWheel		    = new BaseLens(	new LocalFrame(),
@@ -108,7 +108,7 @@ namespace Leap71
                 Voxels voxTread             = voxGetRandomTread();
 
 
-                //set random layers
+                // set random layers
                 List<WheelLayer> aLayers    = new List<WheelLayer>();
                 bool bAddLayers             = true;
                 float fStartRatio           = 0.05f;
@@ -130,7 +130,7 @@ namespace Leap71
                 }
 
 
-                //apply random elements per layer
+                // apply random elements per layer
                 List<Voxels> aVoxelList = new List<Voxels>();
                 foreach (WheelLayer sLayer in aLayers)
                 {
@@ -140,10 +140,10 @@ namespace Leap71
                 }
 
 
-                //assemble
-                Voxels voxWheel             = Sh.voxUnion(voxSolidInnerLayer, voxTread);
-                voxWheel                    = Sh.voxUnion(voxWheel, Sh.voxUnion(aVoxelList));
-                voxWheel                    = Sh.voxUnion(voxWheel, voxSolidOuterLayer);
+                // assemble
+                Voxels voxWheel             = voxSolidInnerLayer + voxTread;
+                voxWheel                    += Voxels.voxCombineAll(aVoxelList);
+                voxWheel                    += voxSolidOuterLayer;
 
 
                 Library.oViewer().RequestScreenShot(Sh.strGetExportPath(Sh.EExport.TGA, $"RandomWheel_{m_nIndex}_Raw"));
@@ -154,25 +154,25 @@ namespace Leap71
             /// <summary>
             /// Returns a wheel tread as a voxelfield that randomly selects tread pattern and profile vs. solid layer.
             /// </summary>
-            protected Voxels voxGetRandomTread()
+            Voxels voxGetRandomTread()
             {
-                //select tread pattern
+                // select tread pattern
                 ITreadPattern xPattern      = xGetRandomTreadPattern();
                 WheelTread		oTread		= new WheelTread(m_aOuterRadiusFrames, xPattern);
 
-                //choose between solid tread or profile (inverse)
+                // choose between solid tread or profile (inverse)
                 bool bProfile               = Uf.bGetRandomBool();
-                Voxels voxTread             = null;
+                Voxels voxTread             = new();
                 if (bProfile == true)
                 {
-                    voxTread = oTread.voxGetProfile();
+                    voxTread += oTread.voxGetProfile();
                     return voxTread;
                 }
                 else
                 {
                     float fOutwardsThickness    = Uf.fGetRandomLinear(1, 4);
                     float fInwardsThickness     = Uf.fGetRandomLinear(1, 2);
-                    voxTread                    = oTread.voxGetTreadLayer(fOutwardsThickness, fInwardsThickness);
+                    voxTread                    += oTread.voxGetTreadLayer(fOutwardsThickness, fInwardsThickness);
                     return voxTread;
                 }
             }
@@ -180,7 +180,7 @@ namespace Leap71
             /// <summary>
             /// Returns a randomly selected tread pattern.
             /// </summary>
-            protected ITreadPattern xGetRandomTreadPattern()
+            ITreadPattern xGetRandomTreadPattern()
             {
                 int iPatternIndex           = Math.Min(2, (int)(Uf.fGetRandomLinear(0, 3)));
                 if (iPatternIndex == 0)
@@ -203,7 +203,7 @@ namespace Leap71
             /// <summary>
             /// Returns a random wheel layer with the specified start radius ratio.
             /// </summary>
-            protected WheelLayer sGetRandomLayer(float fStartRatio)
+            WheelLayer sGetRandomLayer(float fStartRatio)
             {
                 float fEndRatio         = MathF.Min(0.97f, fStartRatio + Uf.fGetRandomLinear(0.05f, 0.55f));
                 WheelLayer sLayer       = new WheelLayer(this, fStartRatio, fEndRatio);
@@ -213,7 +213,7 @@ namespace Leap71
             /// <summary>
             /// Returns a randomly selected type of wheel elements for the specified wheel layer.
             /// </summary>
-            protected WheelElements oGetRandomWheelElements(WheelLayer sLayer)
+            WheelElements oGetRandomWheelElements(WheelLayer sLayer)
             {
                 uint nSymmetry          = (uint)(Uf.fGetRandomLinear(8, 30));
                 float fWallThickness    = Uf.fGetRandomLinear(1f, 3f);

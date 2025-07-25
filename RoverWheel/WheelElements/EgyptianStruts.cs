@@ -51,7 +51,7 @@ namespace Leap71
 
             public override Voxels voxConstruct()
 			{
-				//override symmetry
+				// override symmetry
                 float fStartLengthRatio         = m_sLayer.m_fStartLengthRatio;
                 float fEndLengthRatio	        = m_sLayer.m_fEndLengthRatio;
 				float fHubRadius		        = RoverWheel.m_fHubRadius;
@@ -98,8 +98,8 @@ namespace Leap71
 					}
 				}
                 
-				Voxels oVoxels		= Sh.voxUnion(aVoxelList);
-				oVoxels				= Sh.voxExtrudeZSlice(oVoxels, aZList[0], aZList[^1]);
+				Voxels oVoxels		= Voxels.voxCombineAll(aVoxelList);
+				oVoxels.ProjectZSlice(aZList[0], aZList[^1]);
 
 				Mesh oMesh			= new Mesh(oVoxels);
 				Voxels voxStruts	= new Voxels(MeshUtility.mshApplyTransformation(oMesh, RoverWheel.vecGetWheelLayerTrafo));

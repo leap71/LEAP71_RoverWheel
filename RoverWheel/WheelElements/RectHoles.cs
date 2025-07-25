@@ -94,7 +94,7 @@ namespace Leap71
                     aVoxelList.Add(oHole.voxConstruct());
                 }
 
-				Voxels voxHoles = Sh.voxUnion(aVoxelList);
+				Voxels voxHoles = Voxels.voxCombineAll(aVoxelList);
                 Sh.PreviewVoxels(voxHoles, Cp.clrRandom((int)m_nSymmetry));
 				return voxHoles;
             }
@@ -103,13 +103,13 @@ namespace Leap71
             {
                 Voxels voxHoles = voxGetHoles();
                 Voxels voxLayer = RoverWheel.voxGetLayer(m_sLayer);
-                return Sh.voxSubtract(voxLayer, voxHoles);
+                return voxLayer - voxHoles;
             }
 
-            protected float m_fPhiMid;
-            protected Vector3 vecTrafo(Vector3 vecPt)
+            float m_fPhiMid;
+            Vector3 vecTrafo(Vector3 vecPt)
 			{
-				//transform uniform cylinder to rect hole
+				// transform uniform cylinder to rect hole
 				float fStartLengthRatio = m_sLayer.m_fStartLengthRatio;
                 float fEndLengthRatio	= m_sLayer.m_fEndLengthRatio;
 				float fHubRadius		= RoverWheel.m_fHubRadius;
@@ -119,8 +119,8 @@ namespace Leap71
 
                 vecPt					= vecSupershapeTrafo(vecPt);
 
-                float fRadiusRatio		= (vecPt.Y + 1f) / 2f;                  //-1 to 1
-                float fWidthRatio		= vecPt.X;                              //-1 to 1
+                float fRadiusRatio		= (vecPt.Y + 1f) / 2f;                  // -1 to 1
+                float fWidthRatio		= vecPt.X;                              // -1 to 1
 
 				float fZ			    = vecPt.Z;
                 float fInnerR           = fRefInnerRadius + m_fWallThickness;
@@ -137,12 +137,12 @@ namespace Leap71
 
                 Vector3 vecNewPt        = VecOperations.vecGetCylPoint(fNewRadius, fNewPhi, fNewZ);
 
-				//transform to wheel space
+				// transform to wheel space
 				return RoverWheel.vecGetWheelLayerTrafo(vecNewPt);
                 return RoverWheel.vecGetDummyTrafo(vecNewPt);
             }
 
-            protected Vector3 vecSupershapeTrafo(Vector3 vecPt)
+            Vector3 vecSupershapeTrafo(Vector3 vecPt)
             {
                 float fZ            = vecPt.Z;
                 float fPhi          = VecOperations.fGetPhi(vecPt);

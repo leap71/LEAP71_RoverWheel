@@ -50,7 +50,7 @@ namespace Leap71
 		{
             public Wheel_01()
 			{
-                //Step 0: Reset static parameters
+                // Step 0: Reset static parameters
                 m_aFullUpperHeightPoints    = null;
                 m_aFullLowerHeightPoints    = null;
                 m_aUpperHeightFrames        = null;
@@ -59,13 +59,13 @@ namespace Leap71
                 m_aOuterRadiusFrames        = null;
 
 
-                //Step 1: Define key dimensions
+                // Step 1: Define key dimensions
                 m_fOuterRadius      = 120;
                 m_fHubRadius        = 30;
                 m_fRefWidth         = 60f;
 
 
-                //Step 2: Construct contours
+                // Step 2: Construct contours
                 SetFullUpperHeightPoint();
 				SetFullLowerHeightPoints();
                 m_oWheel		    = new BaseLens(	new LocalFrame(),
@@ -119,12 +119,12 @@ namespace Leap71
                 Voxels voxStruts_05		    = oElements_05.voxConstruct();
 
 				Voxels voxWheel			    = voxGetLayer(0f, 0.05f);
-				voxWheel				    = Sh.voxUnion(voxWheel, voxStruts_01);
-                voxWheel				    = Sh.voxUnion(voxWheel, voxStruts_02);
-                voxWheel				    = Sh.voxUnion(voxWheel, voxStruts_03);
-                voxWheel				    = Sh.voxUnion(voxWheel, voxStruts_04);
-                voxWheel				    = Sh.voxUnion(voxWheel, voxStruts_05);
-				voxWheel				    = Sh.voxUnion(voxWheel, voxTread);
+				voxWheel				    += voxStruts_01;
+                voxWheel				    += voxStruts_02;
+                voxWheel				    += voxStruts_03;
+                voxWheel				    += voxStruts_04;
+                voxWheel				    += voxStruts_05;
+				voxWheel				    += voxTread;
                 return voxWheel;
             }
 		}

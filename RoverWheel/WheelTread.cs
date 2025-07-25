@@ -45,10 +45,10 @@ namespace Leap71
 	{
 		public class WheelTread
 		{
-			protected Frames		m_aFrames;
-			protected float			m_fContourHeight;
-			protected float			m_fRefRadius;
-			protected ITreadPattern	m_xPattern;
+			Frames		m_aFrames;
+			float			m_fContourHeight;
+			float			m_fRefRadius;
+			ITreadPattern	m_xPattern;
 
 
 			/// <summary>
@@ -93,14 +93,14 @@ namespace Leap71
 																		m_fContourHeight,
 																		vecTreadTrafo);
 
-				voxTreadBase				= Sh.voxSubtract(voxTreadBase, voxProfile);
+				voxTreadBase				= voxTreadBase - voxProfile;
 				Sh.PreviewVoxels(voxTreadBase, Cp.clrRandom());
 				return voxTreadBase;
 			}
 
-			protected Vector3 vecTreadTrafo(Vector3 vecPt)
+			Vector3 vecTreadTrafo(Vector3 vecPt)
 			{
-				//input is a shape on a cylinder
+				// input is a shape on a cylinder
 				float fRadius		= VecOperations.fGetRadius(vecPt);
                 float fPhi			= VecOperations.fGetPhi(vecPt);
 				float fZ			= vecPt.Z;

@@ -53,7 +53,7 @@ namespace Leap71
 
 		public class TreadPattern_01 : ITreadPattern
         {
-			protected float m_fRefRadius;
+			float m_fRefRadius;
 
             public Voxels voxConstruct(	float fRefRadius,
                                         float fContourHeight,
@@ -69,10 +69,10 @@ namespace Leap71
 				return voxProfile;
             }
 
-			protected float fGetProfileHeight(float fPhi, float fLengthRatio)
+			float fGetProfileHeight(float fPhi, float fLengthRatio)
 			{
-                float fProfile1 = Uf.fLimitValue(10f * MathF.Cos(50f * fLengthRatio), 0f, 8f);
-                float fProfile2 = Uf.fLimitValue(10f * MathF.Cos(50f * fPhi), 0f, 8f);
+                float fProfile1 = float.Clamp(10f * MathF.Cos(50f * fLengthRatio), 0f, 8f);
+                float fProfile2 = float.Clamp(10f * MathF.Cos(50f * fPhi), 0f, 8f);
                 return m_fRefRadius + fProfile1 + fProfile2;
             }
 		}
