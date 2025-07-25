@@ -69,27 +69,6 @@ namespace Leap71
 			public abstract Voxels voxConstruct();
 
 			/// <summary>
-			/// Helper function to construct the bounding of the full wheel.
-			/// This is equal to generating a wheel layer that goes from 0 to 1.
-			/// </summary>
-            protected Voxels voxGetFullWheel()
-			{
-				float fStartLengthRatio = 0f;
-				float fEndLengthRatio	= 1f;
-                float fRefInnerRadius	= m_fHubRadius + fStartLengthRatio * (m_fOuterRadius - m_fHubRadius);
-                float fRefOuterRadius	= m_fHubRadius + fEndLengthRatio * (m_fOuterRadius - m_fHubRadius);
-                BasePipe oLayer			= new BasePipe(new LocalFrame(), m_fRefWidth, fRefInnerRadius, fRefOuterRadius);
-				oLayer.SetLengthSteps(100);
-                oLayer.SetRadialSteps(100);
-                oLayer.SetPolarSteps(100);
-                oLayer.SetTransformation(vecGetWheelLayerTrafo);
-                //oLayer.SetTransformation(vecGetDummyTrafo);
-
-                Voxels voxLayer = oLayer.voxConstruct();
-                return voxLayer;
-            }
-
-			/// <summary>
 			/// Returns the specified wheel layer as a voxelfield.
 			/// The layer is defined as a wheel layer struct.
 			/// </summary>
@@ -117,37 +96,6 @@ namespace Leap71
                 Sh.PreviewVoxels(voxLayer, Cp.clrRandom((int)(fStartLengthRatio * 100)), 0.6f);
 				return voxLayer;
             }
-
-			/// <summary>
-			/// Returns a number of segments that make up a wheel layer.
-			/// The number defined the symmetry within the layer.
-			/// </summary>
-			protected void GenerateLayerSegments(float fStartLengthRatio, float fEndLengthRatio, uint nNumber)
-			{
-				float fRefInnerRadius	= m_fHubRadius + fStartLengthRatio * (m_fOuterRadius - m_fHubRadius);
-                float fRefOuterRadius	= m_fHubRadius + fEndLengthRatio * (m_fOuterRadius - m_fHubRadius);
-                float dPhi				= (2f * MathF.PI) / (float)(nNumber);
-
-                for (int i = 0; i < nNumber; i++)
-                {
-                    float fPhi				= (2f * MathF.PI) / (float)(nNumber) * i;
-                    BasePipeSegment oLayer	= new BasePipeSegment(	new LocalFrame(),
-																	m_fRefWidth,
-																	fRefInnerRadius,
-																	fRefOuterRadius,
-																	new LineModulation(fPhi),
-																	new LineModulation(fPhi + dPhi),
-																	BasePipeSegment.EMethod.START_END);
-					oLayer.SetLengthSteps(100);
-					oLayer.SetRadialSteps(100);
-					oLayer.SetPolarSteps(100);
-                    oLayer.SetTransformation(vecGetWheelLayerTrafo);
-                    //oLayer.SetTransformation(vecGetDummyTrafo);
-
-                    Voxels voxLayer			= oLayer.voxConstruct();
-					Sh.PreviewVoxels(voxLayer, Cp.clrRandom((int)nNumber * i), 0.6f);
-				}
-			}
 
 			/// <summary>
 			/// Provides the coordinate transformation that translate from a simple cylindrical space to the curved wheel space.
@@ -353,26 +301,23 @@ namespace Leap71
 			/// <summary>
 			/// Creates the points for modulating the upper surface of the wheel bounding body.
 			/// </summary>
-            protected abstract void SetFullUpperHeightPoint();
+			protected abstract List<Vector3> aGetFullUpperHeightPoints();
 
             /// <summary>
             /// Creates the points for modulating the lower surface of the wheel bounding body.
 			/// In this case, the function just mirrors the upper modulation at the z-plane.
             /// </summary>
-            protected void SetFullLowerHeightPoints()
+            protected List<Vector3> aGetFullLowerHeightPoints()
 			{
-                if (m_aFullLowerHeightPoints == null)
-				{
-					List<Vector3> aUpperHeightPoints = m_aFullUpperHeightPoints;
-					List<Vector3> aLowerHeightPoints = new List<Vector3>();
+				List<Vector3> aUpperHeightPoints = aGetFullUpperHeightPoints();
+				List<Vector3> aLowerHeightPoints = new List<Vector3>();
 
-					foreach(Vector3 vecUpper in aUpperHeightPoints)
-					{
-						Vector3 vecLower = new Vector3(-vecUpper.X, vecUpper.Y, vecUpper.Z);
-						aLowerHeightPoints.Add(vecLower);
-					}
-                    m_aFullLowerHeightPoints = aLowerHeightPoints;
+				foreach(Vector3 vecUpper in aUpperHeightPoints)
+				{
+					Vector3 vecLower = new Vector3(-vecUpper.X, vecUpper.Y, vecUpper.Z);
+					aLowerHeightPoints.Add(vecLower);
 				}
+                return aLowerHeightPoints;
             }
 
 			/// <summary>

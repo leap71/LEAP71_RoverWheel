@@ -51,8 +51,6 @@ namespace Leap71
             public Wheel_04()
 			{
                 // Step 0: Reset static parameters
-                m_aFullUpperHeightPoints    = null;
-                m_aFullLowerHeightPoints    = null;
                 m_aUpperHeightFrames        = null;
                 m_aLowerHeightFrames        = null;
                 m_aInnerRadiusFrames        = null;
@@ -66,8 +64,8 @@ namespace Leap71
 
 
                 // Step 2: Construct contours
-                SetFullUpperHeightPoint();
-				SetFullLowerHeightPoints();
+                m_aFullUpperHeightPoints = aGetFullUpperHeightPoints();
+				m_aFullLowerHeightPoints = aGetFullLowerHeightPoints();
                 m_oWheel		    = new BaseLens(	new LocalFrame(),
 												    m_fRefWidth,
                                                     m_fHubRadius,
@@ -79,19 +77,17 @@ namespace Leap71
 				Library.oViewer().RemoveAllObjects();
             }
 
-            protected override void SetFullUpperHeightPoint()
+            protected override List<Vector3> aGetFullUpperHeightPoints()
 			{
-				if (m_aFullUpperHeightPoints == null)
-				{
-					List<Vector3> aControlPoints = new List<Vector3>();
-					aControlPoints.Add(new Vector3(0.6f * m_fRefWidth, 0f, 0.0f));
-					aControlPoints.Add(new Vector3(1.0f * m_fRefWidth, 0f, 0.6f));
-					aControlPoints.Add(new Vector3(1.0f * m_fRefWidth, 0f, 1.0f));
-					aControlPoints.Add(new Vector3(0.0f * m_fRefWidth, 0f, 1.0f));
-					ControlPointSpline oSpline	= new ControlPointSpline(aControlPoints);
-                    m_aFullUpperHeightPoints		= oSpline.aGetPoints(100);
-					m_aFullUpperHeightPoints		= m_aFullUpperHeightPoints.GetRange(0, 100);
-                }
+                List<Vector3> aControlPoints        = new List<Vector3>();
+                aControlPoints.Add(new Vector3(0.6f * m_fRefWidth, 0f, 0.0f));
+                aControlPoints.Add(new Vector3(1.0f * m_fRefWidth, 0f, 0.6f));
+                aControlPoints.Add(new Vector3(1.0f * m_fRefWidth, 0f, 1.0f));
+                aControlPoints.Add(new Vector3(0.0f * m_fRefWidth, 0f, 1.0f));
+                ControlPointSpline oSpline	        = new ControlPointSpline(aControlPoints);
+                List<Vector3> aUpperHeightPoints    = oSpline.aGetPoints(100);
+                aUpperHeightPoints		            = aUpperHeightPoints.GetRange(0, 100);
+                return aUpperHeightPoints;
             }
 
             public override Voxels voxConstruct()
